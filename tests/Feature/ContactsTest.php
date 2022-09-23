@@ -39,7 +39,7 @@ class ContactsTest extends TestCase
 
         $this->assertEquals($this->name, $contact->name);
         $this->assertEquals($this->email, $contact->email);
-        $this->assertEquals($this->birthday, $contact->birthday);
+        $this->assertEquals($this->birthday, $contact->birthday->format('m/d/Y'));
         $this->assertEquals($this->company, $contact->company);
     }
 
@@ -89,11 +89,27 @@ class ContactsTest extends TestCase
         $response->assertJson([
             'name' => $contact->name,
             'email' => $contact->email,
-            'birthday' => $contact->birthday,
+            'birthday' => $contact->birthday->format('m-d-Y'),
             'company' => $contact->company
         ]);
     }
 
+    /** @test */
+    public function a_contact_can_be_updated()
+    {
+        $contact = Contact::factory()->create();
+
+        $response = $this->patch('/api/contacts/' . $contact->id, $this->data());
+
+        $response->assertStatus(200);
+
+        $contact = $contact->fresh();
+
+        $this->assertEquals($this->name, $contact->name);
+        $this->assertEquals($this->email, $contact->email);
+        $this->assertEquals($this->birthday, $contact->birthday->format('m/d/Y'));
+        $this->assertEquals($this->company, $contact->company);
+    }
 
     public function data()
     {
