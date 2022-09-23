@@ -111,6 +111,18 @@ class ContactsTest extends TestCase
         $this->assertEquals($this->company, $contact->company);
     }
 
+    /** @test */
+    public function a_contact_can_be_deleted()
+    {
+        $contact = Contact::factory()->create();
+
+        $response = $this->delete('/api/contacts/' . $contact->id);
+
+        $response->assertStatus(200);
+
+        $this->assertCount(0, Contact::all());
+    }
+
     public function data()
     {
         return [
