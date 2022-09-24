@@ -148,10 +148,9 @@ class ContactsTest extends TestCase
     /** @test */
     public function a_contact_can_be_updated()
     {
+        $contact = Contact::factory()->create(['user_id' => $this->user->id]);
+
         Sanctum::actingAs($this->user);
-
-        $contact = Contact::factory()->create();
-
         $response = $this->patch('/api/contacts/' . $contact->id, $this->data());
 
         $response->assertStatus(200);
@@ -165,12 +164,22 @@ class ContactsTest extends TestCase
     }
 
     /** @test */
+    public function only_the_contact_owner_can_make_updates()
+    {
+        $contact = Contact::factory()->create(['user_id' => $this->user->id]);
+
+        Sanctum::actingAs(User::factory()->create());
+        $response = $this->patch('/api/contacts/' . $contact->id, $this->data());
+
+        $response->assertStatus(403);
+    }
+
+    /** @test */
     public function a_contact_can_be_deleted()
     {
+        $contact = Contact::factory()->create($this->data());
+
         Sanctum::actingAs($this->user);
-
-        $contact = Contact::factory()->create();
-
         $response = $this->delete('/api/contacts/' . $contact->id);
 
         $response->assertStatus(200);
@@ -178,9 +187,21 @@ class ContactsTest extends TestCase
         $this->assertCount(0, Contact::all());
     }
 
+    /** @test */
+    public function only_the_owner_can_delete_the_contact()
+    {
+        $contact = Contact::factory()->create($this->data());
+
+        Sanctum::actingAs(User::factory()->create());
+        $response = $this->delete('/api/contacts/' . $contact->id);
+
+        $response->assertStatus(403);
+    }
+
     public function data()
     {
         return [
+            'user_id' => $this->user->id,
             'name' => $this->name,
             'email' => $this->email,
             'birthday' => $this->birthday,
