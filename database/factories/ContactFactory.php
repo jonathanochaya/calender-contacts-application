@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use App\Models\User;
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
@@ -17,6 +19,7 @@ class ContactFactory extends Factory
     public function definition()
     {
         return [
+            'user_id' => User::factory(),
             'name' => fake()->name(),
             'email' => fake()->safeEmail(),
             'birthday' => fake()->date('m/d/Y'),

@@ -15,4 +15,9 @@ class Contact extends Model
     protected $casts = [
         'birthday' => 'date'
     ];
+
+    public function author()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

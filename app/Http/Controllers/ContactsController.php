@@ -8,6 +8,11 @@ use App\Models\Contact;
 
 class ContactsController extends Controller
 {
+    public function index()
+    {
+        return request()->user()->contacts;
+    }
+
     public function store()
     {
         Contact::create($this->validateData());
@@ -15,6 +20,10 @@ class ContactsController extends Controller
 
     public function show(Contact $contact)
     {
+        if(request()->user()->id !== $contact->user_id) {
+            return abort(403);
+        }
+
         return new ContactResource($contact);
     }
 
