@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ContactResource;
+use App\Http\Resources\ContactResourceCollection;
 use Illuminate\Http\Request;
 use App\Models\Contact;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\Response;
 
 class ContactsController extends Controller
 {
@@ -13,14 +15,16 @@ class ContactsController extends Controller
     {
         $this->authorize('viewAny', Contact::class);
 
-        return request()->user()->contacts;
+        return new ContactResourceCollection(request()->user()->contacts);
     }
 
     public function store()
     {
         $this->authorize('create', Contact::class);
 
-        request()->user()->contacts()->create($this->validateData());
+        $contact = request()->user()->contacts()->create($this->validateData());
+
+        return response(new ContactResource($contact), Response::HTTP_CREATED);
     }
 
     public function show(Contact $contact)
@@ -35,6 +39,8 @@ class ContactsController extends Controller
         $this->authorize('update', $contact);
 
         $contact->update($this->validateData());
+
+        return response(new ContactResource($contact), Response::HTTP_OK);
     }
 
     public function destroy(Contact $contact)
@@ -42,6 +48,8 @@ class ContactsController extends Controller
         $this->authorize('delete', $contact);
 
         $contact->delete();
+
+        return response([], Response::HTTP_NO_CONTENT);
     }
 
     public function validateData()

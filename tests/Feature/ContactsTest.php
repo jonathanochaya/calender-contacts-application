@@ -9,6 +9,7 @@ use App\Models\Contact;
 use App\Models\User;
 use Carbon\Carbon;
 use Laravel\Sanctum\Sanctum;
+use Symfony\Component\HttpFoundation\Response;
 
 class ContactsTest extends TestCase
 {
@@ -53,7 +54,14 @@ class ContactsTest extends TestCase
         $response = $this->get('/api/contacts');
 
         $response->assertJsonCount(1)
-            ->assertJson([['id' => $contact->id]]);
+            ->assertJson([
+                'data' => [
+                    [ 'data' => [
+                            'contact_id' => $contact->id
+                        ]
+                    ]
+                ]
+            ]);
     }
 
 
@@ -64,9 +72,20 @@ class ContactsTest extends TestCase
 
         Sanctum::actingAs($this->user);
 
-        $this->post('/api/contacts', $this->data());
+        $response = $this->post('/api/contacts', $this->data());
+
+        $response->assertStatus(Response::HTTP_CREATED);
 
         $contact = Contact::first();
+
+        $response->assertJson([
+            'data' => [
+                'contact_id' => $contact->id
+            ],
+            'links' => [
+                'self' => url(Contact::url_path . $contact->id)
+            ]
+        ]);
 
         $this->assertEquals($this->name, $contact->name);
         $this->assertEquals($this->email, $contact->email);
@@ -113,7 +132,7 @@ class ContactsTest extends TestCase
         $contact = Contact::first();
 
         $this->assertInstanceOf(Carbon::class, $contact->birthday);
-        $this->assertEquals('05-14-1988', $contact->birthday->format('m-d-Y'));
+        $this->assertEquals('05/14/1988', $contact->birthday->format('m/d/Y'));
     }
 
     /** @test */
@@ -125,10 +144,13 @@ class ContactsTest extends TestCase
         $response = $this->get('/api/contacts/' . $contact->id);
 
         $response->assertJson([
-            'name' => $contact->name,
-            'email' => $contact->email,
-            'birthday' => $contact->birthday->format('m-d-Y'),
-            'company' => $contact->company
+            'data' => [
+                'contact_id' => $contact->id,
+                'name' => $contact->name,
+                'email' => $contact->email,
+                'birthday' => $contact->birthday->format('m/d/Y'),
+                'company' => $contact->company
+            ]
         ]);
     }
 
@@ -142,7 +164,7 @@ class ContactsTest extends TestCase
         Sanctum::actingAs($anotherUser);
         $response = $this->get('/api/contacts/' . $contact->id);
 
-        $response->assertStatus(403);
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     /** @test */
@@ -153,9 +175,18 @@ class ContactsTest extends TestCase
         Sanctum::actingAs($this->user);
         $response = $this->patch('/api/contacts/' . $contact->id, $this->data());
 
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
 
         $contact = $contact->fresh();
+
+        $response->assertJson([
+            'data' => [
+                'contact_id' => $contact->id
+            ],
+            'links' => [
+                'self' => $contact->path()
+            ]
+        ]);
 
         $this->assertEquals($this->name, $contact->name);
         $this->assertEquals($this->email, $contact->email);
@@ -171,7 +202,7 @@ class ContactsTest extends TestCase
         Sanctum::actingAs(User::factory()->create());
         $response = $this->patch('/api/contacts/' . $contact->id, $this->data());
 
-        $response->assertStatus(403);
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     /** @test */
@@ -182,7 +213,7 @@ class ContactsTest extends TestCase
         Sanctum::actingAs($this->user);
         $response = $this->delete('/api/contacts/' . $contact->id);
 
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
 
         $this->assertCount(0, Contact::all());
     }
@@ -195,7 +226,7 @@ class ContactsTest extends TestCase
         Sanctum::actingAs(User::factory()->create());
         $response = $this->delete('/api/contacts/' . $contact->id);
 
-        $response->assertStatus(403);
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     public function data()

@@ -16,6 +16,13 @@ class Contact extends Model
         'birthday' => 'date'
     ];
 
+    const url_path = '/contacts/';
+
+    public function path()
+    {
+        return url(self::url_path . $this->id);
+    }
+
     public function author()
     {
         return $this->belongsTo(User::class);
