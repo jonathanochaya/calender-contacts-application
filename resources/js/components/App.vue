@@ -42,9 +42,7 @@
                             <input type="text">
                         </div>
 
-                        <div class="rounded-full border border-gray-400 text-sm text-white bg-blue-400 w-10 h-10 flex items-center justify-center">
-                            VG
-                        </div>
+                        <UserCircle :name="user.name" />
                     </div>
                 </div>
 
@@ -59,6 +57,9 @@
 </template>
 
 <script setup>
+
+    import UserCircle from './UserCircle.vue';
+
     const props = defineProps(['user']);
 
     window.axios.interceptors.request.use(config => {

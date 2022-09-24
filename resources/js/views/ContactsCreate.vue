@@ -18,6 +18,7 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import InputField from '../components/InputField.vue';
 
@@ -29,11 +30,13 @@ const fields = ref({
 });
 
 const errors = ref(null);
+const router = useRouter();
 
 const createContact = async () => {
     try {
-        const response = await axios.post('/contacts', fields.value);
+        const { data } = await axios.post('/contacts', fields.value);
 
+        router.push({ name: 'ContactsShow', params: { id: data.data.contact_id }});
     } catch (err) {
         errors.value = err.response.data.errors;
     }
