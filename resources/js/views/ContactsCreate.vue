@@ -36,7 +36,7 @@ const createContact = async () => {
     try {
         const { data } = await axios.post('/contacts', fields.value);
 
-        router.push({ name: 'ContactsShow', params: { id: data.data.contact_id }});
+        router.push({ name: 'ContactShow', params: { id: data.data.contact_id }});
     } catch (err) {
         errors.value = err.response.data.errors;
     }

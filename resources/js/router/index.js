@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import ExampleComponent from '../components/ExampleComponent.vue';
 import ContactsCreate from '../views/ContactsCreate.vue';
 import ContactsShow from '../views/ContactsShow.vue';
+import ContactsList from '../views/ContactsList.vue';
 
 const routes = [
     {
@@ -9,19 +10,24 @@ const routes = [
         component: ExampleComponent
     },
     {
+        path: '/contacts',
+        component: ContactsList,
+        name: 'ContactsList'
+    },
+    {
         path: '/contacts/create',
         component: ContactsCreate,
-        name: 'createContact'
+        name: 'ContactCreate'
     },
     {
         path: '/contacts/:id',
         component: ContactsShow,
-        name: 'ContactsShow'
+        name: 'ContactShow'
     },
     {
         path: '/contacts/:id/edit',
         Component: null,
-        name: 'ContactsEdit'
+        name: 'ContactEdit'
     }
 ];
 
