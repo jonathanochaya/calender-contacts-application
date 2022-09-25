@@ -27,4 +27,9 @@ class Contact extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function scopeBirthdays($query)
+    {
+        return $query->whereRaw('birthday like "%-'. now()->format('m')  .'-%"');
+    }
 }
