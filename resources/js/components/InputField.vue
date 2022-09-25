@@ -1,7 +1,7 @@
 <template>
      <div class="relative pb-4">
         <label :for="name" class="text-blue-500 uppercase text-xs font-bold absolute pt-2">{{ label }}</label>
-        <input @input="handleInput" class="focus:outline-none focus:border-blue-400 pt-8 w-full border-b pb-2" :placeholder="placeholder" type="text" :id="name">
+        <input :value="fieldValue" @input="handleInput" class="focus:outline-none focus:border-blue-400 pt-8 w-full border-b pb-2" :placeholder="placeholder" type="text" :id="name">
 
         <p v-if="errors && errors[name]" class="text-red-600 text-sm">{{ errorMessage }}</p>
     </div>
@@ -15,11 +15,16 @@
         name: String,
         label: String,
         placeholder: String,
-        errors: Object
+        errors: Object,
+        fields: Object
     });
 
     const errorMessage = computed(() => {
         return props.errors[props.name][0];
+    });
+
+    const fieldValue = computed(() => {
+        return props.fields[props.name] ?? '';
     });
 
     const emit = defineEmits(['update:field']);
