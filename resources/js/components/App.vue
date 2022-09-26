@@ -38,11 +38,10 @@
                     <div>Latest contacts</div>
 
                     <div class="flex justify-between">
-                        <div>
-                            <input type="text">
+                        <div class="flex items-center">
+                            <SearchBar />
+                            <UserCircle :name="user.name" />
                         </div>
-
-                        <UserCircle :name="user.name" />
                     </div>
                 </div>
 
@@ -59,6 +58,7 @@
 <script setup>
 
     import UserCircle from './UserCircle.vue';
+    import SearchBar from './SearchBar.vue';
 
     const props = defineProps(['user']);
 

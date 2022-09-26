@@ -39,8 +39,7 @@ class Contact extends Model
         return [
             'name' => $this->name,
             'email' => $this->email,
-            'company' => $this->company,
-            'author' => $this->author
+            'company' => $this->company
         ];
     }
 }
