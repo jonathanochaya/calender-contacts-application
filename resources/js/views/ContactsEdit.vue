@@ -40,7 +40,7 @@ const router = useRouter();
 (async () => {
     try {
         loading.value = true;
-        const { data } = await axios.get(`/contacts/${ route.params.id }`);
+        const { data } = await axios.get(`api/contacts/${ route.params.id }`);
 
         loading.value = false;
         fields.value = data.data;
@@ -51,7 +51,7 @@ const router = useRouter();
 
 const updateContact = async () => {
     try {
-        const { data } = await axios.patch(`/contacts/${ fields.value.contact_id }`, fields.value);
+        const { data } = await axios.patch(`api/contacts/${ fields.value.contact_id }`, fields.value);
 
         router.push({ name: 'ContactShow', params: { id: fields.value.contact_id }});
     } catch (err) {

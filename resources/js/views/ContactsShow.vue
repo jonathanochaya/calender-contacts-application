@@ -58,7 +58,7 @@
     (async () => {
         try {
             loading.value = true;
-            const { data } = await axios.get(`/contacts/${ route.params.id }`);
+            const { data } = await axios.get(`api/contacts/${ route.params.id }`);
 
             loading.value = false;
             contact.value = data.data;
@@ -69,7 +69,7 @@
 
     const destroy = async () => {
         try {
-            const reply = await axios.delete(`/contacts/${ contact.value.contact_id }`);
+            const reply = await axios.delete(`api/contacts/${ contact.value.contact_id }`);
 
             if(reply.status === 204) router.push({ name: 'ContactsList'});
         } catch (err) {

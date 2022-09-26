@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import ExampleComponent from '../components/ExampleComponent.vue';
 import ContactsCreate from '../views/ContactsCreate.vue';
 import ContactsShow from '../views/ContactsShow.vue';
 import ContactsEdit from '../views/ContactsEdit.vue';
@@ -9,32 +8,33 @@ import BirthdaysIndex from '../views/BirthdaysIndex.vue';
 const routes = [
     {
         path: '/',
-        component: ExampleComponent
-    },
-    {
-        path: '/contacts',
         component: ContactsIndex,
-        name: 'ContactsList'
+        name: 'ContactsList',
+        meta: { title: 'Contacts' }
     },
     {
         path: '/contacts/create',
         component: ContactsCreate,
-        name: 'ContactCreate'
+        name: 'ContactCreate',
+        meta: { title: 'Add New Contact' }
     },
     {
         path: '/contacts/:id',
         component: ContactsShow,
-        name: 'ContactShow'
+        name: 'ContactShow',
+        meta: { title: 'Contact Details' }
     },
     {
         path: '/contacts/:id/edit/',
         component: ContactsEdit,
-        name: 'ContactEdit'
+        name: 'ContactEdit',
+        meta: { title: 'Edit Contact' }
     },
     {
         path: '/birthdays',
         component: BirthdaysIndex,
-        name: 'Birthdays'
+        name: 'Birthdays',
+        meta: { title: "This Month's Birthdays" }
     }
 ];
 

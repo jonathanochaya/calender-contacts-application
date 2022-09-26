@@ -34,7 +34,7 @@ const router = useRouter();
 
 const createContact = async () => {
     try {
-        const { data } = await axios.post('/contacts', fields.value);
+        const { data } = await axios.post('api/contacts', fields.value);
 
         router.push({ name: 'ContactShow', params: { id: data.data.contact_id }});
     } catch (err) {

@@ -1,5 +1,5 @@
 <template>
-    <ContactsList :message="message" endpoint="/contacts" />
+    <ContactsList :message="message" endpoint="api/contacts" />
 </template>
 
 <script setup>

@@ -43,7 +43,7 @@
         if(searchTerm.value.length < 3) return;
 
         try {
-            const { data } = await axios.post('/search', { searchTerm: searchTerm.value });
+            const { data } = await axios.post('api/search', { searchTerm: searchTerm.value });
 
             results.value = data.data;
         } catch (err) {
