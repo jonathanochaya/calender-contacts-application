@@ -3,7 +3,8 @@ import ExampleComponent from '../components/ExampleComponent.vue';
 import ContactsCreate from '../views/ContactsCreate.vue';
 import ContactsShow from '../views/ContactsShow.vue';
 import ContactsEdit from '../views/ContactsEdit.vue';
-import ContactsList from '../views/ContactsList.vue';
+import ContactsIndex from '../views/ContactsIndex.vue';
+import BirthdaysIndex from '../views/BirthdaysIndex.vue';
 
 const routes = [
     {
@@ -12,7 +13,7 @@ const routes = [
     },
     {
         path: '/contacts',
-        component: ContactsList,
+        component: ContactsIndex,
         name: 'ContactsList'
     },
     {
@@ -29,6 +30,11 @@ const routes = [
         path: '/contacts/:id/edit/',
         component: ContactsEdit,
         name: 'ContactEdit'
+    },
+    {
+        path: '/birthdays',
+        component: BirthdaysIndex,
+        name: 'Birthdays'
     }
 ];
 
