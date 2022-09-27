@@ -4,6 +4,7 @@ import ContactsShow from '../views/ContactsShow.vue';
 import ContactsEdit from '../views/ContactsEdit.vue';
 import ContactsIndex from '../views/ContactsIndex.vue';
 import BirthdaysIndex from '../views/BirthdaysIndex.vue';
+import NotFound from '../views/NotFound.vue';
 
 const routes = [
     {
@@ -35,6 +36,11 @@ const routes = [
         component: BirthdaysIndex,
         name: 'Birthdays',
         meta: { title: "This Month's Birthdays" }
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        component: NotFound,
+        meta: { title: "404 | Page Not Found. "}
     }
 ];
 
